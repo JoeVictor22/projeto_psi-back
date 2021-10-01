@@ -10,6 +10,9 @@ migrations
 # pycharm 
 .idea
 
+# trash
+service/__pycache__
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
