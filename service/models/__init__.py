@@ -1,0 +1,13 @@
+import auditoria
+import catalogo
+import catalogo_produto
+import categoria
+import funcionamento
+import integracao
+import pedido
+import perfil
+import permissao
+import produto
+import produto_adicional
+import rota
+import usuario
