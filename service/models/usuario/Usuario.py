@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 Base = declarative_base()
 
-class Usario(Base):
+class Usuario(Base):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True, nullable=False)
 
-class UsarioModel(BaseModel):
+class UsuarioModel(BaseModel):
     id: int

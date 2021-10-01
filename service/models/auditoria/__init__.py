@@ -1,1 +1,1 @@
-from Auditoria import Tabela, TabelaModel
+from service.models.auditoria.Auditoria import Auditoria, AuditoriaModel

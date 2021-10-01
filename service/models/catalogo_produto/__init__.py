@@ -1,0 +1,1 @@
+from service.models.catalogo_produto.CatalogoProduto import CatalogoProduto, CatalogoProdutoModel

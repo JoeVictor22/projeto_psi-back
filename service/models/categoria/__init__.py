@@ -1,0 +1,1 @@
+from service.models.categoria.Categoria import Categoria, CategoriaModel

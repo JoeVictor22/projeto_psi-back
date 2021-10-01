@@ -1,0 +1,1 @@
+from service.models.permissao.Permissao import Permissao, PermissaoModel
