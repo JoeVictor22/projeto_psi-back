@@ -1,10 +1,8 @@
 from sqlalchemy import Column, Integer
-from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel, constr
+from service import db
 
-Base = declarative_base()
-
-class Auditoria(Base):
+class Auditoria(db.model):
     __tablename__ = 'auditoria'
     id = Column(Integer, primary_key=True, nullable=False)
 

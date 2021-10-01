@@ -1,10 +1,8 @@
 from sqlalchemy import Column, Integer
-from sqlalchemy.ext.declarative import declarative_base
+from service import db
 from pydantic import BaseModel
 
-Base = declarative_base()
-
-class Catalogo(Base):
+class Catalogo(db.model):
     __tablename__ = 'catalogo'
     id = Column(Integer, primary_key=True, nullable=False)
 
