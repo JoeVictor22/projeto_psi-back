@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer
 from pydantic import BaseModel, constr
 from service import db
 
-class Auditoria(db.model):
+class Auditoria(db.Model):
     __tablename__ = 'auditoria'
     id = Column(Integer, primary_key=True, nullable=False)
 
