@@ -11,4 +11,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 DEBUG = True
 
-print(SQLALCHEMY_DATABASE_URI)
+print(f"\nStarting app with db={SQLALCHEMY_DATABASE_URI}\n")
