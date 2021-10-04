@@ -3,6 +3,7 @@ venv
 
 # alembic
 migrations
+alembic/versions/*
 
 # .env
 .env
