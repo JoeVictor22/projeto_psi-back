@@ -19,6 +19,7 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 from aplicativo.database import Base
 import infra.config as flask_config
+
 config.set_main_option("sqlalchemy.url", flask_config.SQLALCHEMY_DATABASE_URI)
 target_metadata = Base.metadata
 
@@ -66,9 +67,7 @@ def run_migrations_online():
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
