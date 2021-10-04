@@ -8,9 +8,6 @@ Base = declarative_base()
 class Pedido(Base):
     __tablename__ = "pedido"
 
-
-
-
     id = Column(Integer, primary_key=True, nullable=False)
 
 
