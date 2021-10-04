@@ -1,0 +1,4 @@
+- Link a issue
+- Rode black
+- Peça review
+- É isso
