@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer
-from aplicativo import db
 from pydantic import BaseModel
+from aplicativo.database import Base
 
 
-class Catalogo(db.Model):
+class Catalogo(Base):
+
     __tablename__ = "catalogo"
     id = Column(Integer, primary_key=True, nullable=False)
 
