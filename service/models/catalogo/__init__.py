@@ -1,1 +1,0 @@
-from service.models.catalogo.Catalogo import Catalogo, CatalogoModel

@@ -1,1 +1,0 @@
-from service.models.perfil.Perfil import Perfil, PerfilModel

@@ -1,1 +1,0 @@
-from service.models.funcionamento.Funcionamento import Funcionamento, FuncionamentoModel
