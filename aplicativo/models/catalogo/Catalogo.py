@@ -4,6 +4,7 @@ from aplicativo.database import Base
 
 
 class Catalogo(Base):
+
     __tablename__ = "catalogo"
     id = Column(Integer, primary_key=True, nullable=False)
 
