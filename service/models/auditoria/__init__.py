@@ -1,1 +1,0 @@
-from service.models.auditoria.Auditoria import Auditoria, AuditoriaModel

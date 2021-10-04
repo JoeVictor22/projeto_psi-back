@@ -1,1 +1,0 @@
-from service.models.usuario.Usuario import Usuario, UsuarioModel

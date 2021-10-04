@@ -1,1 +1,0 @@
-from service.models.produto.Produto import Produto, ProdutoModel
