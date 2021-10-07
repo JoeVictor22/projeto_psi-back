@@ -1,4 +1,4 @@
-import aplicativo.models.auditoria
+# import aplicativo.models.auditoria
 import aplicativo.models.catalogo
 import aplicativo.models.catalogo_produto
 import aplicativo.models.categoria

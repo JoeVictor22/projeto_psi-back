@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, Enum, ForeignKey
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 from aplicativo.database import Base
+from aplicativo.enumerators.tipo_integracao.tipo_integracao import TipoIntegracao
 
 
 class Integracao(Base):

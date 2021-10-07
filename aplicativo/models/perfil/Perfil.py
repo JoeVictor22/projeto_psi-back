@@ -1,6 +1,7 @@
 from sqlalchemy import Column, BigInteger, ForeignKey, String, Float, Enum
 from pydantic import BaseModel, constr
 from aplicativo.database import Base
+from aplicativo.enumerators.cidade.cidade import Cidade
 
 
 class Perfil(Base):
@@ -13,7 +14,6 @@ class Perfil(Base):
     geolocalizacao = Column(Float, nullable=False)
     email = Column(String(255))
     cnpj_cpf = Column(String(255))
-    funcionamento = Column(ForeignKey("funcionamento.id"), nullable=False)
 
 
 class PerfilModel(BaseModel):
@@ -25,4 +25,3 @@ class PerfilModel(BaseModel):
     geolocalizacao: float
     email: constr(max_length=255)
     cnpj_cpf: constr(max_length=255)
-    funcionamento: int
