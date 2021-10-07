@@ -6,7 +6,7 @@ from aplicativo.database import Base
 class Funcionamento(Base):
     __tablename__ = "funcionamento"
     id = Column(BigInterger, primary_key=True, nullable=False)
-    perfil_id = Column(ForeignKey('perfil.id'), nullable=False)
+    perfil_id = Column(ForeignKey("perfil.id"), nullable=False)
     horario_inicio = Column(Time)
     horario_fim = Column(Time)
     dia = Column(Enum(Dia))

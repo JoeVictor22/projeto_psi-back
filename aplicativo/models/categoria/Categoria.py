@@ -8,7 +8,7 @@ class Categoria(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     nome = Column(String(255))
     descricao = Column(String(255), nullable=False)
-    perfil_id = Column(ForeignKey('perfil.id'), nullable=False)
+    perfil_id = Column(ForeignKey("perfil.id"), nullable=False)
 
 
 class CategoriaModel(BaseModel):

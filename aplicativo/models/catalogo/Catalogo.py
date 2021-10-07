@@ -7,7 +7,7 @@ class Catalogo(Base):
     __tablename__ = "catalogo"
     id = Column(Integer, primary_key=True, nullable=False)
     nome = Column(String(255))
-    perfil_id = Column(ForeignKey('perfil.id'), nullable=False)
+    perfil_id = Column(ForeignKey("perfil.id"), nullable=False)
     descricao = Column(String(255), nullable=False)
 
 

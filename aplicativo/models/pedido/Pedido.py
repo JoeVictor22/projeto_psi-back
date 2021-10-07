@@ -8,7 +8,7 @@ class Pedido(Base):
     id = Column(BigInteger, primary_key=True, nullable=False)
     resumo = Column(Json)
     telefone = Column(String(255))
-    perfil_id = Column(ForeignKey('perfil.id'), nullable=False)
+    perfil_id = Column(ForeignKey("perfil.id"), nullable=False)
     data = Column(DateTime)
     confirmado = Column(Boolean)
 

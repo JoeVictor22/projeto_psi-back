@@ -8,7 +8,7 @@ class Permissao(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     nome = Column(String(255))
     grupo_id = Column(Enum(Grupo), nullable=False)
-    rota_id = Column(ForeignKey('rota.id'), nullable=False)
+    rota_id = Column(ForeignKey("rota.id"), nullable=False)
 
 
 class PermissaoModel(BaseModel):

@@ -12,7 +12,7 @@ class Usuario(Base):
     nome = Column(String(255))
     email = Column(String(255), unique=True)
     senha = Column(String(50))
-    grupo_id = Column(Integer)#FK enum GRUPO
+    grupo_id = Column(Integer)  # FK enum GRUPO
 
 
 class UsuarioModel(BaseModel):

@@ -6,14 +6,15 @@ from aplicativo.database import Base
 class Perfil(Base):
     __tablename__ = "perfil"
     id = Column(BigInteger, primary_key=True, nullable=False)
-    usuario_id = Column(ForeignKey('usuario.id'), nullable=False)
+    usuario_id = Column(ForeignKey("usuario.id"), nullable=False)
     nome = Column(String(255))
     endereco = Column(String(255))
     cidade_id = Column(Enum(Cidade), nullable=False)
     geolocalizacao = Column(Float, nullable=False)
     email = Column(String(255))
     cnpj_cpf = Column(String(255))
-    funcionamento = Column(ForeignKey('funcionamento.id'), nullable=False)
+    funcionamento = Column(ForeignKey("funcionamento.id"), nullable=False)
+
 
 class PerfilModel(BaseModel):
     id: int
