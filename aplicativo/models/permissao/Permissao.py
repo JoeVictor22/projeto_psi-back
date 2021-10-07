@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Enum
 from pydantic import BaseModel, constr
 from aplicativo.database import Base
+from aplicativo.enumerators.grupo.grupo import Grupo
 
 
 class Permissao(Base):
@@ -9,6 +10,7 @@ class Permissao(Base):
     nome = Column(String(255))
     grupo_id = Column(Enum(Grupo), nullable=False)
     rota_id = Column(ForeignKey("rota.id"), nullable=False)
+    permitir = Column(Boolean, nullable=False, default=False)
 
 
 class PermissaoModel(BaseModel):
@@ -16,3 +18,4 @@ class PermissaoModel(BaseModel):
     nome: constr(max_length=255)
     grupo_id: Grupo
     rota_id: int
+    permitir: bool = False

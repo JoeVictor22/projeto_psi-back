@@ -3,8 +3,11 @@ from flask_cors import CORS
 import infra.config as config
 from sqlalchemy.orm import scoped_session
 from aplicativo.database import SessionLocal, engine, Base
+from flasgger import Swagger
 
 app = Flask(__name__)
+swagger = Swagger(app)
+
 app.config.from_object(config)
 
 CORS(app)  # se o deploy for em vpc ou de msm origem, remover cors

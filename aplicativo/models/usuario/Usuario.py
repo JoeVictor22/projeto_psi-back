@@ -21,3 +21,6 @@ class UsuarioModel(BaseModel):
     email: constr(max_length=255)
     senha: constr(max_length=50)
     grupo_id = int
+
+    class Config:
+        orm_mode = True
