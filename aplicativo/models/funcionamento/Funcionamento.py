@@ -5,6 +5,7 @@ from aplicativo.database import Base
 from aplicativo.enumerators.dia.dia import Dia
 from datetime import time
 
+
 class Funcionamento(Base):
     __tablename__ = "funcionamento"
     id = Column(BigInteger, primary_key=True, nullable=False)
@@ -13,9 +14,12 @@ class Funcionamento(Base):
     horario_fim = Column(Time)
     dia = Column(Enum(Dia))
 
-    __table_args__ = (UniqueConstraint('dia', 'horario_inicio', 'horario_fim', name='_escala'),)
+    __table_args__ = (
+        UniqueConstraint("dia", "horario_inicio", "horario_fim", name="_escala"),
+    )
     # seg 10-00 13-00
     # ter 10-00 13-00
+
 
 class FuncionamentoModel(BaseModel):
     id: int

@@ -3,6 +3,7 @@ from pydantic import BaseModel, constr, Json
 from aplicativo.database import Base
 from datetime import datetime
 
+
 class Pedido(Base):
     __tablename__ = "pedido"
     id = Column(BigInteger, primary_key=True, nullable=False)

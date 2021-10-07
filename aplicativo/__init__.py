@@ -20,6 +20,7 @@ import aplicativo.models
 
 Base.metadata.create_all(bind=engine)
 
+
 @app.teardown_appcontext
 def close_session(e):
     app.session.remove()

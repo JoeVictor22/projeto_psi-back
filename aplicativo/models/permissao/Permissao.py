@@ -12,6 +12,7 @@ class Permissao(Base):
     rota_id = Column(ForeignKey("rota.id"), nullable=False)
     permitir = Column(Boolean, nullable=False, default=False)
 
+
 class PermissaoModel(BaseModel):
     id: int
     nome: constr(max_length=255)
