@@ -12,46 +12,39 @@ prefix = "/usuario"
 @app.route(f"{prefix}/list", methods=["GET"])
 # @checar_acesso("usuario-get")
 def usuario_all():
+    query = select(Usuario)
+    result = app.session.execute(query).scalars().all()
+    output = {
+        "count": len(result),
+        "items": list(map(Usuario.to_dict, result))
+    }
 
-    a = select(Usuario)
-    result = app.session.execute(a).scalars().all()
-    pprint(result)
-    result = list(map(UsuarioModel.from_orm, result))
-
-    print("\n")
-    pprint(result)
-
-    return ujson.dumps("b"), 200
+    return ujson.dumps(output), 200
 
 
 @app.route(f"{prefix}/get/<item_id>", methods=["GET"])
 # @checar_acesso("usuario-get")
 def usuario_get(item_id):
     result = app.session.get(Usuario, item_id)
-    print("\n")
     pprint(result)
 
     if not result:
-        ujson.dumps("fail"), 200
+        return ujson.dumps("fail"), 200
 
-    return ujson.dumps("success"), 200
+    output = {
+        **result.to_dict()
+    }
+    return ujson.dumps(output), 200
 
 
 @app.route(f"{prefix}/add", methods=["POST"])
 # @checar_acesso("usuario-post")
-# @field_validator(UsuarioModel)
+@field_validator(UsuarioModel)
 def usuario_add():
-    # json = request.get_json()
-    # novo_registro = Usuario.from_json(json)
+    json = request.get_json()
+    novo_registro = Usuario.from_dict(json)
 
-    # stmt = insert(Usuario).values(**novo_registro)
-
-    stmt = insert(Usuario).values(
-        nome="joao",
-        email="joao@joaomail.com.br.edu.bolsonaro",
-        senha="123esqueci",
-        grupo_id=1,
-    )
+    stmt = insert(Usuario).values(novo_registro.to_dict())
 
     try:
         app.session.execute(stmt)
@@ -66,12 +59,11 @@ def usuario_add():
 
 @app.route(f"{prefix}/edit/<item_id>", methods=["PUT"])
 # @checar_acesso("usuario-put")
-# @field_validator(UsuarioModel)
+@field_validator(UsuarioModel)
 def usuario_edit(item_id):
-    # json = request.get_json()
+    json = request.get_json()
+    dados_alterados = Usuario.to_update(json)
 
-    # dados_alterados = Usuario.from_json(json).to_dict()
-    dados_alterados = {}
     stmt = update(Usuario).where(Usuario.id == item_id).values(**dados_alterados)
 
     try:
