@@ -27,20 +27,22 @@ class Usuario(Base):
 
     def to_dict(self):
         return dict(
-            nome=self.nome,
-            email=self.email,
-            senha=self.senha,
-            grupo_id=self.grupo_id
+            nome=self.nome, email=self.email, senha=self.senha, grupo_id=self.grupo_id
         )
 
     @staticmethod
     def to_update(dicionario):
-        fields_to_edit = {nome_campo: dicionario[nome_campo] for nome_campo in Usuario._fields if nome_campo in dicionario}
+        fields_to_edit = {
+            nome_campo: dicionario[nome_campo]
+            for nome_campo in Usuario._fields
+            if nome_campo in dicionario
+        }
         return fields_to_edit
 
     @property
     def schema(self):
         return UsuarioModel
+
 
 class UsuarioModel(BaseModel):
     nome: constr(max_length=255)

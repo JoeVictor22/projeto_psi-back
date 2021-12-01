@@ -1,44 +1,62 @@
 from flask import request
-import ujson
 from aplicativo import app
+from aplicativo.components.respostas import Respostas
 from aplicativo.components.routes import field_validator, checar_acesso
 from aplicativo.models.usuario import Usuario, UsuarioModel
 from sqlalchemy import select, insert, update, delete
+from sqlalchemy.exc import SQLAlchemyError
 from pprint import pprint
 
 prefix = "/usuario"
 
 
 @app.route(f"{prefix}/list", methods=["GET"])
-# @checar_acesso("usuario-get")
+@checar_acesso(f"{prefix}-get")
 def usuario_all():
-    query = select(Usuario)
-    result = app.session.execute(query).scalars().all()
-    output = {
-        "count": len(result),
-        "items": list(map(Usuario.to_dict, result))
-    }
 
-    return ujson.dumps(output), 200
+    pagina = request.args.get("pagina", 0) * app.config["por_pagina"]
+
+    query = select(Usuario)
+
+    if request.args.get("nome", None):
+        query.where(Usuario.nome.ilike(f"%{request.args['nome']}%"))
+
+    if request.args.get("email", None):
+        query.where(Usuario.email.ilike(f"%{request.args['email']}%"))
+
+    if request.args.get("grupo_id", None):
+        query.where(Usuario.grupo_id == request.args.get["grupo_id"])
+
+    query.offset(pagina).limit(app.config["por_pagina"])
+
+    result = app.session.execute(query).scalars().all()
+    output = {"count": len(result), "items": list(map(Usuario.to_dict, result))}
+
+    res = Respostas.retorno_generico(dicionario=output, codigo=200)
+
+    return res.json
 
 
 @app.route(f"{prefix}/get/<item_id>", methods=["GET"])
-# @checar_acesso("usuario-get")
+@checar_acesso(f"{prefix}-get")
 def usuario_get(item_id):
     result = app.session.get(Usuario, item_id)
     pprint(result)
 
     if not result:
-        return ujson.dumps("fail"), 200
+        res = Respostas.mensagem_generica(
+            mensagem="Não foi possivel encontrar o registro", codigo=204
+        )
+        return res.json
 
-    output = {
-        **result.to_dict()
-    }
-    return ujson.dumps(output), 200
+    output = {**result.to_dict()}
+
+    res = Respostas.retorno_generico(dicionario=output, codigo=200)
+    return res.json
 
 
 @app.route(f"{prefix}/add", methods=["POST"])
-# @checar_acesso("usuario-post")
+@checar_acesso(f"{prefix}-post")
 @field_validator(UsuarioModel)
 def usuario_add():
     json = request.get_json()
@@ -49,16 +67,16 @@ def usuario_add():
     try:
         app.session.execute(stmt)
         app.session.commit()
-        message = "sucesso"
-    except Exception as e:
-        print(e)
-        message = "falha"
+        res = Respostas.mensagem_generica(codigo=200)
 
-    return ujson.dumps(message), 200
+    except SQLAlchemyError as e:
+        res = Respostas.erro_generico(codigo=400)
+
+    return res.json
 
 
 @app.route(f"{prefix}/edit/<item_id>", methods=["PUT"])
-# @checar_acesso("usuario-put")
+@checar_acesso(f"{prefix}-put")
 @field_validator(UsuarioModel)
 def usuario_edit(item_id):
     json = request.get_json()
@@ -69,26 +87,27 @@ def usuario_edit(item_id):
     try:
         app.session.execute(stmt)
         app.session.commit()
-        message = "sucesso"
-    except Exception as e:
-        print(e)
-        message = "falha"
+        res = Respostas.mensagem_generica(codigo=200)
 
-    return ujson.dumps(message), 200
+    except SQLAlchemyError as e:
+        print(e)
+        res = Respostas.erro_generico(codigo=400)
+
+    return res.json
 
 
 @app.route(f"{prefix}/delete/<item_id>", methods=["delete"])
-# @checar_acesso("usuario-delete")
+@checar_acesso(f"{prefix}-delete")
 def usuario_delete(item_id):
     stmt = delete(Usuario).where(Usuario.id == item_id)
 
     try:
         app.session.execute(stmt)
         app.session.commit()
+        res = Respostas.mensagem_generica(codigo=200)
 
-        message = "sucesso"
-    except Exception as e:
+    except SQLAlchemyError as e:
         print(e)
-        message = "falha"
+        res = Respostas.erro_generico(codigo=400)
 
-    return ujson.dumps(message), 200
+    return res.json
