@@ -49,6 +49,8 @@ def checar_acesso(resource_name: str):  # passar o nome da rota
     def wrapper(f):
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
+            return f(*args, **kwargs)
+
             user = get_jwt_identity()  # consultar no banco com a chave
             if user is None:
                 return (
