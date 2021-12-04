@@ -1,5 +1,7 @@
 from flask import Flask, _app_ctx_stack
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+
 import infra.config as config
 from sqlalchemy.orm import scoped_session
 from aplicativo.database import SessionLocal, engine, Base
@@ -9,6 +11,7 @@ app = Flask(__name__)
 swagger = Swagger(app)
 
 app.config.from_object(config)
+jwt = JWTManager(app)
 
 CORS(app)  # se o deploy for em vpc ou de msm origem, remover cors
 
