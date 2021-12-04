@@ -99,6 +99,21 @@ def usuario_edit(item_id):
 @app.route(f"{prefix}/delete/<item_id>", methods=["delete"])
 @checar_acesso(f"{prefix}-delete")
 def usuario_delete(item_id):
+    """Gist detail view.
+        ---
+        get:
+          summary: Get a user by ID
+          parameters:
+            - in: path
+              name: item_id
+              schema:
+                type: integer
+              required: true
+              description: Numeric ID of the user to get
+          responses:
+            200:
+                "description": "pong"
+    """
     stmt = delete(Usuario).where(Usuario.id == item_id)
 
     try:
