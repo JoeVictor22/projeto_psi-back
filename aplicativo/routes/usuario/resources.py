@@ -19,13 +19,10 @@ def usuario_all():
     query = select(Usuario)
 
     if request.args.get("nome", None):
-        query.where(Usuario.nome.ilike(f"%{request.args['nome']}%"))
+        query = query.where(Usuario.nome.ilike(f"%{request.args['nome']}%"))
 
     if request.args.get("email", None):
-        query.where(Usuario.email.ilike(f"%{request.args['email']}%"))
-
-    if request.args.get("grupo_id", None):
-        query.where(Usuario.grupo_id == request.args.get["grupo_id"])
+        query = query.where(Usuario.email.ilike(f"%{request.args['email']}%"))
 
     query.offset(pagina).limit(app.config["POR_PAGINA"])
 
