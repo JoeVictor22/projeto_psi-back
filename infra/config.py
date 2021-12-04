@@ -9,6 +9,8 @@ SQLALCHEMY_DATABASE_URI = os.getenv(
 )
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+JWT_SECRET_KEY = '2d5issobnDGg2gyKfyvfb9gHRfUS23rysF6B14k3bgVnaFONmesmoH8JasodkmeuaAPdo2Chapaa23F'
+
 DEBUG = True
 
 print(f"\nStarting app with db={SQLALCHEMY_DATABASE_URI}\n")
