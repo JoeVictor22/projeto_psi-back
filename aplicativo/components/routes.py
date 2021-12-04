@@ -45,7 +45,7 @@ def field_validator(validator: BaseModel):
 
 # access control
 def checar_acesso(resource_name: str):  # passar o nome da rota
-    @jwt_required
+    #@jwt_required
     def wrapper(f):
         @functools.wraps(f)
         def wrapped(*args, **kwargs):

@@ -31,7 +31,7 @@ def login():
 
 
 @app.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)
+#@jwt_required(refresh=True)
 def refresh():
     # current_user = get_jwt_identity()
     current_user = "o_id_chave_do_usuario"
@@ -46,7 +46,7 @@ def refresh():
 
 
 @app.route("/me", methods=["GET"])
-@jwt_required
+#@jwt_required
 def me():
     current_user = get_jwt_identity()
 
