@@ -14,7 +14,7 @@ prefix = "/usuario"
 @checar_acesso(f"{prefix}-get")
 def usuario_all():
 
-    pagina = request.args.get("pagina", 0) * app.config["por_pagina"]
+    pagina = request.args.get("pagina", 0) * app.config["POR_PAGINA"]
 
     query = select(Usuario)
 
@@ -27,7 +27,7 @@ def usuario_all():
     if request.args.get("grupo_id", None):
         query.where(Usuario.grupo_id == request.args.get["grupo_id"])
 
-    query.offset(pagina).limit(app.config["por_pagina"])
+    query.offset(pagina).limit(app.config["POR_PAGINA"])
 
     result = app.session.execute(query).scalars().all()
     output = {"count": len(result), "items": list(map(Usuario.to_dict, result))}

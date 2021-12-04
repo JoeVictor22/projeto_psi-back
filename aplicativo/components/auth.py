@@ -38,7 +38,7 @@ def login():
 
 
 @app.route("/refresh", methods=["POST"])
-@jwt_required
+@jwt_required(refresh=True)
 def refresh():
     usuario = get_jwt_identity()
 
