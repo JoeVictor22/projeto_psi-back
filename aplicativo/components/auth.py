@@ -6,24 +6,31 @@ from flask_jwt_extended import (
     get_jwt_identity,
 )
 from flask import request
+from sqlalchemy import select
 
 from aplicativo import app
+from aplicativo.components.routes import field_validator
+from aplicativo.models.usuario import Usuario
+from aplicativo.models.utils.Auth import AuthSchema
 
 
 @app.route("/auth", methods=["POST"])
-# @field_validator(AuthLoginSchema)
+@field_validator(AuthSchema)
 def login():
     """Cria chave JWT para acesso"""
     data = request.get_json()
 
-    if False:  # no authorization
-        return ujson.dumps("erro"), 401
+    usuario = select(Usuario).where(Usuario.email == data['email'])
 
+    if not usuario:  # no authorization
+        return ujson.dumps("erro"), 401 # Todo
+
+    # Todo create hash for id
     return (
         ujson.dumps(
             {
-                "access_token": create_access_token("id_do_user_ou_chave"),
-                "refresh_token": create_refresh_token("id_do_user_ou_chave"),
+                "access_token": create_access_token(identity=usuario.id),
+                "refresh_token": create_refresh_token(identity=usuario.id),
             }
         ),
         200,
@@ -31,13 +38,12 @@ def login():
 
 
 @app.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)
+@jwt_required
 def refresh():
-    # current_user = get_jwt_identity()
-    current_user = "o_id_chave_do_usuario"
+    usuario = get_jwt_identity()
 
     return (
-        ujson.dumps({"access_token": create_access_token(identity=current_user)}),
+        ujson.dumps({"access_token": create_access_token(identity=usuario)}),
         200,
     )
 
@@ -48,14 +54,16 @@ def refresh():
 @app.route("/me", methods=["GET"])
 @jwt_required
 def me():
-    current_user = get_jwt_identity()
+    usuario_id = get_jwt_identity()
 
-    user = "checa se o registro ta no banco"
+    usuario = app.session.get(Usuario, usuario_id)
 
-    if user is None:
+    if usuario is None:
+        # Todo
         return ujson.dumps({"message": "msg de erro", "error": True})
 
     return (
+        # Todo
         ujson.dumps({"todas_as_infos_do_usuario", "infos"}),
         200,
     )

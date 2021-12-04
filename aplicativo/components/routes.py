@@ -6,7 +6,7 @@ from aplicativo.messages import mensagens_pydantic
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 # pydantic validator
-def field_validator(validator: BaseModel):
+def field_validator(validator):
     def wrapper(f):
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
