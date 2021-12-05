@@ -37,8 +37,8 @@ def usuario_all():
                                     items:
                                         type: array
                                         items:
-                                            count:
-                                                type: integer
+                                            schema:
+                                                $ref: "#/components/schemas/UsuarioModel"
                                 required:
                                     - count
                                     - items
@@ -82,7 +82,8 @@ def usuario_get(item_id):
                 description: "Sucesso"
                 content:
                     application/json:
-                        ref: Objeto
+                        schema:
+                            $ref: "#/components/schemas/UsuarioModel"
             400:
                 description: "Ocorreu um erro"
                 content:
@@ -162,14 +163,16 @@ def usuario_delete(item_id):
           responses:
             200:
                 description: "Sucesso"
-                content:
+                                content:
                     application/json:
-                        message: Mensagem de sucesso
+                        message: Sucesso
+ 
             400:
                 description: "Ocorreu um erro"
                 content:
                     application/json:
                         error: Mensagem de erro
+
     """
     stmt = delete(Usuario).where(Usuario.id == item_id)
 
