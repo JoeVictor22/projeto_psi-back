@@ -16,9 +16,13 @@ class Usuario(Base, ClasseBase):
     grupo_id = Column(Integer)  # FK enum GRUPO
     _fields = ["nome", "email", "senha", "grupo_id"]
 
-    @property
-    def schema(self):
-        return UsuarioModel
+    @staticmethod
+    def from_dict(dicionario):
+        return ClasseBase.from_dict(dicionario, Usuario)
+
+    @staticmethod
+    def to_update(dicionario):
+        return ClasseBase.to_update(dicionario, Usuario)
 
 
 class UsuarioModel(BaseModel):
