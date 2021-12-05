@@ -7,30 +7,26 @@ from aplicativo.routes.usuario.resources import usuario_delete, usuario_edit, us
 from aplicativo.models.usuario import UsuarioModel
 
 spec = APISpec(
-    title="Demo API",
+    title="Backend",
     version="1.0.0",
     openapi_version="3.0.2",
     info=dict(
-        description="Demo API",
+        description="API backend para aplicação",
         version="1.0.0-oas3",
         contact=dict(
-            email="admin@donofden.com"
+            email="joelvictor1746@gmail.com"
             ),
-        license=dict(
-            name="Apache 2.0",
-            url='http://www.apache.org/licenses/LICENSE-2.0.html'
-            )
         ),
     servers=[
         dict(
-            description="Test server",
-            url="https://resources.donofden.com"
+            description="Server local",
+            url="http://localhost:5000"
             )
         ],
     tags=[
         dict(
-            name="Demo",
-            description="Endpoints related to Demo"
+            name="Rotas",
+            description="Rotas"
             )
         ],
     plugins=[FlaskPlugin()],

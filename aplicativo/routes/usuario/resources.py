@@ -37,8 +37,7 @@ def usuario_all():
                                     items:
                                         type: array
                                         items:
-                                            schema:
-                                                $ref: "#/components/schemas/UsuarioModel"
+                                            $ref: "#/components/schemas/UsuarioModel"
                                 required:
                                     - count
                                     - items
@@ -69,6 +68,7 @@ def usuario_get(item_id):
     """Busca registro por ID
         ---
         get:
+
           summary: Busca o registro do banco se ele existir
           parameters:
             - in: path
@@ -88,7 +88,12 @@ def usuario_get(item_id):
                 description: "Ocorreu um erro"
                 content:
                     application/json:
-                        error: Mensagem de erro
+                      schema:
+                          type: object
+                          properties:
+                            error:
+                              type: string
+
     """
     result = app.session.get(Usuario, item_id)
     pprint(result)
@@ -109,6 +114,34 @@ def usuario_get(item_id):
 @checar_acesso(f"{prefix}-post")
 @field_validator(UsuarioModel)
 def usuario_add():
+    """Adiciona registro
+        ---
+        post:
+            summary: Adiciona um novo registro
+            requestBody:
+                description: Dados necessários para a criação do registro
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/UsuarioModel'
+            responses:
+              200:
+                description: "Sucesso"
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UsuarioModel"
+              400:
+                description: "Ocorreu um erro"
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+
+    """
     json = request.get_json()
     novo_registro = Usuario.from_dict(json)
 
@@ -129,6 +162,44 @@ def usuario_add():
 @checar_acesso(f"{prefix}-put")
 @field_validator(UsuarioModel)
 def usuario_edit(item_id):
+    """Adiciona registro
+        ---
+        put:
+            summary: Edita um registro
+            parameters:
+                - in: path
+                  name: item_id
+                  schema:
+                    type: integer
+                  required: true
+                  description: Identificação única do registro
+            requestBody:
+                description: Dados necessários para a edição do registro
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/UsuarioModel'
+            responses:
+                200:
+                    description: "Sucesso"
+                    content:
+                        application/json:
+                            schema:
+                              type: object
+                              properties:
+                                message:
+                                  type: string
+                400:
+                    description: "Ocorreu um erro"
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            error:
+                              type: string
+
+    """
     json = request.get_json()
     dados_alterados = Usuario.to_update(json)
 
@@ -151,7 +222,8 @@ def usuario_edit(item_id):
 def usuario_delete(item_id):
     """Remove registro por ID
         ---
-        get:
+        delete:
+
           summary: Remove o registro do banco se ele existir
           parameters:
             - in: path
@@ -163,15 +235,23 @@ def usuario_delete(item_id):
           responses:
             200:
                 description: "Sucesso"
-                                content:
+                content:
                     application/json:
-                        message: Sucesso
+                        schema:
+                          type: object
+                          properties:
+                            message:
+                              type: string
  
             400:
                 description: "Ocorreu um erro"
                 content:
                     application/json:
-                        error: Mensagem de erro
+                        schema:
+                          type: object
+                          properties:
+                            error:
+                              type: string
 
     """
     stmt = delete(Usuario).where(Usuario.id == item_id)
