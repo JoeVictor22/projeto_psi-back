@@ -84,7 +84,7 @@ def usuario_get(item_id):
                 application/json:
                     schema:
                         $ref: "#/components/schemas/UsuarioModel"
-        400:
+        204:
             description: "Ocorreu um erro"
             content:
                 application/json:
