@@ -20,10 +20,10 @@ def login():
     """Cria chave JWT para acesso"""
     data = request.get_json()
 
-    usuario = select(Usuario).where(Usuario.email == data['email'])
+    usuario = select(Usuario).where(Usuario.email == data["email"])
 
     if not usuario:  # no authorization
-        return ujson.dumps("erro"), 401 # Todo
+        return ujson.dumps("erro"), 401  # Todo
 
     # Todo create hash for id
     return (
