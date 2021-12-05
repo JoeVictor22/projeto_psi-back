@@ -110,6 +110,10 @@ def usuario_delete(item_id):
           responses:
             200:
                 "description": "pong"
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/UsuarioModel"
     """
     stmt = delete(Usuario).where(Usuario.id == item_id)
 

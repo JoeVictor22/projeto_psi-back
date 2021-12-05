@@ -149,3 +149,4 @@ dmypy.json
 .idea/projeto_psi-back.iml
 .idea/vcs.xml
 /utils/out.txt
+/utils/out.json

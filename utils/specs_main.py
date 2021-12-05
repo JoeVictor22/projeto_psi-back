@@ -3,6 +3,7 @@ from apispec_webframeworks.flask import FlaskPlugin
 import json
 
 from aplicativo import app
+from aplicativo.models.usuario import UsuarioModel
 from aplicativo.routes.usuario.resources import usuario_delete
 
 spec = APISpec(
@@ -38,7 +39,15 @@ spec = APISpec(
 
 
 with app.app_context():
+    # models = [UsuarioModel.schema()]
+    # for model in models:
+    #     app.componentes.schemas('Usuario', model)
+
+    ref = UsuarioModel.schema()
+    spec.components.schema(ref['title'], ref)
     spec.path(view=usuario_delete)
-    f = open("../utils/out.txt", "w")
-    f.write(json.dumps(spec.to_dict(),indent=4))
+
+    f = open("../utils/out.json", "w")
+    f.write(json.dumps(spec.to_dict(), indent=4))
     f.close()
+
