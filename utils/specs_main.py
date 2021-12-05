@@ -3,7 +3,7 @@ from apispec_webframeworks.flask import FlaskPlugin
 import json
 
 from aplicativo import app
-from aplicativo.routes.usuario.resources import usuario_delete
+from aplicativo.routes.usuario.resources import usuario_delete, usuario_edit, usuario_add, usuario_get, usuario_all
 
 spec = APISpec(
     title="Demo API",
@@ -38,7 +38,13 @@ spec = APISpec(
 
 
 with app.app_context():
+
+
     spec.path(view=usuario_delete)
+    spec.path(view=usuario_all)
+    spec.path(view=usuario_get)
+    spec.path(view=usuario_add)
+    spec.path(view=usuario_edit)
     f = open("../utils/out.txt", "w")
     f.write(json.dumps(spec.to_dict(),indent=4))
     f.close()

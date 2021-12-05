@@ -13,7 +13,36 @@ prefix = "/usuario"
 @app.route(f"{prefix}/list", methods=["GET"])
 @checar_acesso(f"{prefix}-get")
 def usuario_all():
-
+    """Busca registro por ID
+        ---
+        get:
+            summary: Busca o registro do banco se ele existir
+            parameters:
+                - name: nome
+                  in: query
+                  description: Nome para filtro
+                  required: false
+                  schema:
+                    type: string
+            responses:
+                200:
+                    description: "Sucesso"
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                    items:
+                                        type: array
+                                        items:
+                                            count:
+                                                type: integer
+                                required:
+                                    - count
+                                    - items
+    """
     pagina = request.args.get("pagina", 0) * app.config["POR_PAGINA"]
 
     query = select(Usuario)
@@ -37,6 +66,29 @@ def usuario_all():
 @app.route(f"{prefix}/get/<item_id>", methods=["GET"])
 @checar_acesso(f"{prefix}-get")
 def usuario_get(item_id):
+    """Busca registro por ID
+        ---
+        get:
+          summary: Busca o registro do banco se ele existir
+          parameters:
+            - in: path
+              name: item_id
+              schema:
+                type: integer
+              required: true
+              description: Identificação única do registro
+          responses:
+            200:
+                description: "Sucesso"
+                content:
+                    application/json:
+                        ref: Objeto
+            400:
+                description: "Ocorreu um erro"
+                content:
+                    application/json:
+                        error: Mensagem de erro
+    """
     result = app.session.get(Usuario, item_id)
     pprint(result)
 
@@ -96,20 +148,28 @@ def usuario_edit(item_id):
 @app.route(f"{prefix}/delete/<item_id>", methods=["delete"])
 @checar_acesso(f"{prefix}-delete")
 def usuario_delete(item_id):
-    """Gist detail view.
+    """Remove registro por ID
         ---
         get:
-          summary: Get a user by ID
+          summary: Remove o registro do banco se ele existir
           parameters:
             - in: path
               name: item_id
               schema:
                 type: integer
               required: true
-              description: Numeric ID of the user to get
+              description: Identificação única do registro
           responses:
             200:
-                "description": "pong"
+                description: "Sucesso"
+                content:
+                    application/json:
+                        message: Mensagem de sucesso
+            400:
+                description: "Ocorreu um erro"
+                content:
+                    application/json:
+                        error: Mensagem de erro
     """
     stmt = delete(Usuario).where(Usuario.id == item_id)
 
