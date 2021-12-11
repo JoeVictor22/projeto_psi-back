@@ -6,7 +6,7 @@ class ClasseBase:
 
     @staticmethod
     def from_dict(dicionario, classe):
-        return classe(**{key: dicionario[key] for key in classe._fields})
+        return classe(**{key: dicionario.get(key) for key in classe._fields})
 
     @staticmethod
     def to_update(dicionario, classe):

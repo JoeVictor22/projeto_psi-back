@@ -2,17 +2,17 @@ from flask import request
 from aplicativo import app
 from aplicativo.components.respostas import Respostas
 from aplicativo.components.routes import field_validator, checar_acesso
-from aplicativo.models.catalogo import Catalogo, CatalogoModel
+from aplicativo.models.perfil import Perfil, PerfilModel
 from sqlalchemy import select, insert, update, delete
 from sqlalchemy.exc import SQLAlchemyError
 from pprint import pprint
 
-prefix = "/catalogo"
+prefix = "/perfil"
 
 
 @app.route(f"{prefix}/list", methods=["GET"])
 @checar_acesso(f"{prefix}-get")
-def catalogo_all():
+def perfil_all():
     """Busca registro por ID
     ---
     get:
@@ -37,25 +37,25 @@ def catalogo_all():
                                 items:
                                     type: array
                                     items:
-                                        $ref: "#/components/schemas/CatalogoModel"
+                                        $ref: "#/components/schemas/PerfilModel"
                             required:
                                 - count
                                 - items
     """
     pagina = request.args.get("pagina", 0) * app.config["POR_PAGINA"]
 
-    query = select(Catalogo)
+    query = select(Perfil)
 
     if request.args.get("nome", None):
-        query = query.where(Catalogo.nome.ilike(f"%{request.args['nome']}%"))
+        query = query.where(Perfil.nome.ilike(f"%{request.args['nome']}%"))
 
     if request.args.get("email", None):
-        query = query.where(Catalogo.perfil_id == {request.args["perfil_id"]})
+        query = query.where(Perfil.perfil_id == {request.args["perfil_id"]})
 
     query.offset(pagina).limit(app.config["POR_PAGINA"])
 
     result = app.session.execute(query).scalars().all()
-    output = {"count": len(result), "items": list(map(Catalogo.to_dict, result))}
+    output = {"count": len(result), "items": list(map(Perfil.to_json, result))}
 
     res = Respostas.retorno_generico(dicionario=output, codigo=200)
 
@@ -64,7 +64,7 @@ def catalogo_all():
 
 @app.route(f"{prefix}/get/<item_id>", methods=["GET"])
 @checar_acesso(f"{prefix}-get")
-def catalogo_get(item_id):
+def perfil_get(item_id):
     """Busca registro por ID
     ---
     get:
@@ -83,7 +83,7 @@ def catalogo_get(item_id):
             content:
                 application/json:
                     schema:
-                        $ref: "#/components/schemas/CatalogoModel"
+                        $ref: "#/components/schemas/PerfilModel"
         204:
             description: "Ocorreu um erro"
             content:
@@ -95,7 +95,7 @@ def catalogo_get(item_id):
                           type: string
 
     """
-    result = app.session.get(Catalogo, item_id)
+    result = app.session.get(Perfil, item_id)
     pprint(result)
 
     if not result:
@@ -104,7 +104,7 @@ def catalogo_get(item_id):
         )
         return res.json
 
-    output = {**result.to_dict()}
+    output = {**result.to_json()}
 
     res = Respostas.retorno_generico(dicionario=output, codigo=200)
     return res.json
@@ -112,8 +112,8 @@ def catalogo_get(item_id):
 
 @app.route(f"{prefix}/add", methods=["POST"])
 @checar_acesso(f"{prefix}-post")
-@field_validator(CatalogoModel)
-def catalogo_add():
+@field_validator(PerfilModel)
+def perfil_add():
     """Adiciona registro
     ---
     post:
@@ -123,14 +123,14 @@ def catalogo_add():
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/CatalogoModel'
+                  $ref: '#/components/schemas/PerfilModel'
         responses:
           200:
             description: "Sucesso"
             content:
                 application/json:
                     schema:
-                        $ref: "#/components/schemas/CatalogoModel"
+                        $ref: "#/components/schemas/PerfilModel"
           400:
             description: "Ocorreu um erro"
             content:
@@ -143,9 +143,9 @@ def catalogo_add():
 
     """
     json = request.get_json()
-    novo_registro = Catalogo.from_dict(json)
+    novo_registro = Perfil.from_dict(json)
 
-    stmt = insert(Catalogo).values(novo_registro.to_dict())
+    stmt = insert(Perfil).values(novo_registro.to_dict())
 
     try:
         app.session.execute(stmt)
@@ -153,6 +153,7 @@ def catalogo_add():
         res = Respostas.mensagem_generica(codigo=200)
 
     except SQLAlchemyError as e:
+        print(e)
         res = Respostas.erro_generico(codigo=400)
 
     return res.json
@@ -160,8 +161,8 @@ def catalogo_add():
 
 @app.route(f"{prefix}/edit/<item_id>", methods=["PUT"])
 @checar_acesso(f"{prefix}-put")
-@field_validator(CatalogoModel)
-def catalogo_edit(item_id):
+@field_validator(PerfilModel)
+def perfil_edit(item_id):
     """Adiciona registro
     ---
     put:
@@ -178,7 +179,7 @@ def catalogo_edit(item_id):
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/CatalogoModel'
+                  $ref: '#/components/schemas/PerfilModel'
         responses:
             200:
                 description: "Sucesso"
@@ -201,9 +202,9 @@ def catalogo_edit(item_id):
 
     """
     json = request.get_json()
-    dados_alterados = Catalogo.to_update(json)
+    dados_alterados = Perfil.to_update(json)
 
-    stmt = update(Catalogo).where(Catalogo.id == item_id).values(**dados_alterados)
+    stmt = update(Perfil).where(Perfil.id == item_id).values(**dados_alterados)
 
     try:
         app.session.execute(stmt)
@@ -219,7 +220,7 @@ def catalogo_edit(item_id):
 
 @app.route(f"{prefix}/delete/<item_id>", methods=["delete"])
 @checar_acesso(f"{prefix}-delete")
-def catalogo_delete(item_id):
+def perfil_delete(item_id):
     """Remove registro por ID
     ---
     delete:
@@ -254,7 +255,7 @@ def catalogo_delete(item_id):
                           type: string
 
     """
-    stmt = delete(Catalogo).where(Catalogo.id == item_id)
+    stmt = delete(Perfil).where(Perfil.id == item_id)
 
     try:
         app.session.execute(stmt)

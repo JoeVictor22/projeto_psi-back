@@ -12,6 +12,26 @@ from aplicativo.routes.usuario.resources import (
 )
 from aplicativo.models.usuario import UsuarioModel
 
+from aplicativo import app
+from aplicativo.routes.produto.resources import (
+    produto_delete,
+    produto_edit,
+    produto_add,
+    produto_get,
+    produto_all,
+)
+from aplicativo.models.produto import ProdutoModel
+
+from aplicativo.routes.perfil.resources import (
+    perfil_delete,
+    perfil_edit,
+    perfil_add,
+    perfil_get,
+    perfil_all,
+)
+from aplicativo.models.perfil import PerfilModel
+from aplicativo.enumerators.cidade import CidadeModel
+
 spec = APISpec(
     title="Backend",
     version="1.0.0",
@@ -32,18 +52,36 @@ with app.app_context():
     f = open("../utils/out.txt", "w")
     f.write(json.dumps(spec.to_dict(), indent=4))
     f.close()
-    # models = [UsuarioModel.schema()]
-    # for model in models:
-    #     app.componentes.schemas('Usuario', model)
+    models = [
+        PerfilModel.schema(),
+        ProdutoModel.schema(),
+        UsuarioModel.schema(),
+        CidadeModel.schema(),
+    ]
+    # del models[0]['definitions']
+    # models[0]['properties']['cidade_id']['$ref'] = '#/components/schemas/CidadeModel'
+    for model in models:
+        spec.components.schema(model["title"], model)
 
-    ref = UsuarioModel.schema()
-    spec.components.schema(ref["title"], ref)
-
-    spec.path(view=usuario_delete)
-    spec.path(view=usuario_all)
-    spec.path(view=usuario_get)
-    spec.path(view=usuario_add)
-    spec.path(view=usuario_edit)
+    paths = [
+        perfil_delete,
+        perfil_all,
+        perfil_get,
+        perfil_add,
+        perfil_edit,
+        produto_delete,
+        produto_all,
+        produto_get,
+        produto_add,
+        produto_edit,
+        usuario_delete,
+        usuario_all,
+        usuario_get,
+        usuario_add,
+        usuario_edit,
+    ]
+    for path in paths:
+        spec.path(view=path)
 
     f = open("../utils/out.json", "w")
     f.write(json.dumps(spec.to_dict(), indent=4))
