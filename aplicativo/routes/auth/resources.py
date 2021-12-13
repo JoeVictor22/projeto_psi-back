@@ -16,18 +16,18 @@ from aplicativo.models.usuario import Usuario
 from aplicativo.models.utils.Auth import AuthSchema
 
 
-@app.route("/auth", methods=["POST"])
+@app.route("/login", methods=["POST"])
 @field_validator(AuthSchema)
 def login():
     """Cria chave JWT para acesso"""
     data = request.get_json()
 
     usuario = select(Usuario).where(Usuario.email == data["email"]).limit(1)
-
+    usuario = app.session.execute(usuario).scalars().all()
     if not usuario:  # no authorization
         return Respostas.erro_generico("usuario inexistente", codigo=401).json
-
-    elif not check_password_hash(usuario.senha, str(data.get("senha"))):
+    usuario = usuario[0]
+    if not check_password_hash(usuario.senha, str(data.get("senha"))):
         return Respostas.erro_generico("erro de autenticacao", codigo=401).json
 
     # Todo create hash for id

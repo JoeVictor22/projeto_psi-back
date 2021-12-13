@@ -12,7 +12,7 @@ class Usuario(Base, ClasseBase):
     id = Column(BigInteger, primary_key=True, nullable=False)
     nome = Column(String(255))
     email = Column(String(255), unique=True)
-    senha = Column(String(50))
+    senha = Column(String(255))
     grupo_id = Column(Integer)  # FK enum GRUPO
     _fields = ["nome", "email", "senha", "grupo_id"]
 
@@ -20,15 +20,21 @@ class Usuario(Base, ClasseBase):
     def from_dict(dicionario):
         return ClasseBase.from_dict(dicionario, Usuario)
 
+    def to_json(self):
+        dicionario = {key: getattr(self, key) for key in self._fields}
+        dicionario["id"] = self.id
+        return dicionario
+
     @staticmethod
     def to_update(dicionario):
+        del dicionario['senha']
         return ClasseBase.to_update(dicionario, Usuario)
 
 
 class UsuarioModel(BaseModel):
     nome: constr(max_length=255)
     email: constr(max_length=255)
-    senha: constr(max_length=50)
+    senha: constr(max_length=255)
     grupo_id: int
 
     class Config:

@@ -2,10 +2,16 @@ import functools
 from pydantic import BaseModel, ValidationError
 from flask import request
 import ujson
+
+from aplicativo import app
+from aplicativo.components.respostas import Respostas
 from aplicativo.messages import mensagens_pydantic
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 # pydantic validator
+from aplicativo.models.usuario import Usuario
+
+
 def field_validator(validator):
     def wrapper(f):
         @functools.wraps(f)
@@ -45,53 +51,12 @@ def field_validator(validator):
 
 # access control
 def checar_acesso(resource_name: str):  # passar o nome da rota
-    # @jwt_required
     def wrapper(f):
-        @functools.wraps(f)
+        @jwt_required
         def wrapped(*args, **kwargs):
-            return f(*args, **kwargs)
-
-            user = get_jwt_identity()  # consultar no banco com a chave
+            user = app.session.get(Usuario, get_jwt_identity())
             if user is None:
-                return (
-                    ujson.dumps(
-                        {
-                            "description": "messagem usuario negado",
-                            "error": "Unauthorized Access",
-                            "status_code": 401,
-                        }
-                    ),
-                    401,
-                )
-
-            # user_role = user.cargo_id
-            # contr, act = resource_name.split("-")
-
-            data = "registro com as informacoes da rota do sistema"
-
-            if data is None:
-                return (
-                    ujson.dumps(
-                        {
-                            "description": "mensagem de ACESSO NEGADO",
-                            "error": "Unauthorized Access",
-                            "status_code": 401,
-                        }
-                    ),
-                    401,
-                )
-
-            if not data.permitir:
-                return (
-                    ujson.dumps(
-                        {
-                            "description": "mensagem ACESSO NEGADO",
-                            "error": "Unauthorized Access",
-                            "status_code": 401,
-                        }
-                    ),
-                    401,
-                )
+                return Respostas.erro_generico("erro de autenticacao", codigo=401).json
 
             return f(*args, **kwargs)
 

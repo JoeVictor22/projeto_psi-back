@@ -49,9 +49,6 @@ def produto_all():
     if request.args.get("nome", None):
         query = query.where(Produto.nome.ilike(f"%{request.args['nome']}%"))
 
-    if request.args.get("email", None):
-        query = query.where(Produto.email.ilike(f"%{request.args['produto_id']}%"))
-
     query.offset(pagina).limit(app.config["POR_PAGINA"])
 
     result = app.session.execute(query).scalars().all()

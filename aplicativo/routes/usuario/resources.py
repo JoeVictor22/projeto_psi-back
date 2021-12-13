@@ -1,4 +1,6 @@
 from flask import request
+from werkzeug.security import generate_password_hash
+
 from aplicativo import app
 from aplicativo.components.respostas import Respostas
 from aplicativo.components.routes import field_validator, checar_acesso
@@ -55,7 +57,7 @@ def usuario_all():
     query.offset(pagina).limit(app.config["POR_PAGINA"])
 
     result = app.session.execute(query).scalars().all()
-    output = {"count": len(result), "items": list(map(Usuario.to_dict, result))}
+    output = {"count": len(result), "items": list(map(Usuario.to_json, result))}
 
     res = Respostas.retorno_generico(dicionario=output, codigo=200)
 
@@ -104,7 +106,7 @@ def usuario_get(item_id):
         )
         return res.json
 
-    output = {**result.to_dict()}
+    output = {**result.to_json()}
 
     res = Respostas.retorno_generico(dicionario=output, codigo=200)
     return res.json
@@ -143,6 +145,7 @@ def usuario_add():
 
     """
     json = request.get_json()
+    json['senha'] = generate_password_hash(json['senha'], method="sha256")
     novo_registro = Usuario.from_dict(json)
 
     stmt = insert(Usuario).values(novo_registro.to_dict())
