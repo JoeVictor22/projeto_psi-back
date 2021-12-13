@@ -6,7 +6,7 @@ from aplicativo.messages import mensagens_pydantic
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 # pydantic validator
-def field_validator(validator: BaseModel):
+def field_validator(validator):
     def wrapper(f):
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
@@ -45,10 +45,12 @@ def field_validator(validator: BaseModel):
 
 # access control
 def checar_acesso(resource_name: str):  # passar o nome da rota
-    @jwt_required
+    # @jwt_required
     def wrapper(f):
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
+            return f(*args, **kwargs)
+
             user = get_jwt_identity()  # consultar no banco com a chave
             if user is None:
                 return (
