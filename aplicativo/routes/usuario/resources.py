@@ -145,7 +145,7 @@ def usuario_add():
 
     """
     json = request.get_json()
-    json['senha'] = generate_password_hash(json['senha'], method="sha256")
+    json["senha"] = generate_password_hash(json["senha"], method="sha256")
     novo_registro = Usuario.from_dict(json)
 
     stmt = insert(Usuario).values(novo_registro.to_dict())

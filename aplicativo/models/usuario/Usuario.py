@@ -27,7 +27,7 @@ class Usuario(Base, ClasseBase):
 
     @staticmethod
     def to_update(dicionario):
-        del dicionario['senha']
+        del dicionario["senha"]
         return ClasseBase.to_update(dicionario, Usuario)
 
 

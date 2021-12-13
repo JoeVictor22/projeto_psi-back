@@ -6,7 +6,7 @@ import ujson
 from aplicativo import app
 from aplicativo.components.respostas import Respostas
 from aplicativo.messages import mensagens_pydantic
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 # pydantic validator
 from aplicativo.models.usuario import Usuario
@@ -50,10 +50,15 @@ def field_validator(validator):
 
 
 # access control
-def checar_acesso(resource_name: str):  # passar o nome da rota
+def checar_acesso(resource_name: str):
     def wrapper(f):
-        @jwt_required
+        @functools.wraps(f)
         def wrapped(*args, **kwargs):
+            try:
+                verify_jwt_in_request()
+            except Exception:
+                return Respostas.erro_generico("erro de autenticacao", codigo=401).json
+
             user = app.session.get(Usuario, get_jwt_identity())
             if user is None:
                 return Respostas.erro_generico("erro de autenticacao", codigo=401).json
