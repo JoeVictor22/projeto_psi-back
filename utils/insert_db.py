@@ -158,10 +158,11 @@ def add_perfils():
 
 def add_produtos():
     for i in range(len(usuarios)):
-        for dic in produtos:
+        for dic in produto:
             novo_registro = dict(
                 nome=dic["nome"],
                 preco=dic["preco"],
+                imagem=dic["imagem"],
                 descricao=dic["descricao"],
                 perfil_id=i + 1,
             )
