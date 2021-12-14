@@ -17,6 +17,8 @@ def perfil_all():
     ---
     get:
         summary: Busca o registro do banco se ele existir
+        security:
+            - bearerAuth: [ ]
         parameters:
             - name: nome
               in: query
@@ -68,8 +70,9 @@ def perfil_get(item_id):
     """Busca registro por ID
     ---
     get:
-
       summary: Busca o registro do banco se ele existir
+      security:
+            - bearerAuth: [ ]
       parameters:
         - in: path
           name: item_id
@@ -118,6 +121,8 @@ def perfil_add():
     ---
     post:
         summary: Adiciona um novo registro
+        security:
+            - bearerAuth: [ ]
         requestBody:
             description: Dados necessários para a criação do registro
             content:
@@ -167,6 +172,8 @@ def perfil_edit(item_id):
     ---
     put:
         summary: Edita um registro
+        security:
+            - bearerAuth: [ ]
         parameters:
             - in: path
               name: item_id
@@ -224,8 +231,9 @@ def perfil_delete(item_id):
     """Remove registro por ID
     ---
     delete:
-
       summary: Remove o registro do banco se ele existir
+      security:
+            - bearerAuth: [ ]
       parameters:
         - in: path
           name: item_id

@@ -1,8 +1,8 @@
 from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
 import json
-
 from aplicativo import app
+
 from aplicativo.routes.usuario.resources import (
     usuario_delete,
     usuario_edit,
@@ -12,7 +12,6 @@ from aplicativo.routes.usuario.resources import (
 )
 from aplicativo.models.usuario import UsuarioModel
 
-from aplicativo import app
 from aplicativo.routes.produto.resources import (
     produto_delete,
     produto_edit,
@@ -31,6 +30,11 @@ from aplicativo.routes.perfil.resources import (
 )
 from aplicativo.models.perfil import PerfilModel
 from aplicativo.enumerators.cidade import CidadeModel
+
+from aplicativo.routes.auth.resources import (
+    login,
+)
+from aplicativo.models.utils.Auth import AuthSchema
 
 spec = APISpec(
     title="Backend",
@@ -57,11 +61,14 @@ with app.app_context():
         ProdutoModel.schema(),
         UsuarioModel.schema(),
         CidadeModel.schema(),
+        AuthSchema.schema(),
     ]
-    # del models[0]['definitions']
-    # models[0]['properties']['cidade_id']['$ref'] = '#/components/schemas/CidadeModel'
+
     for model in models:
         spec.components.schema(model["title"], model)
+
+    bearer_scheme = {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
+    spec.components.security_scheme("bearerAuth", bearer_scheme)
 
     paths = [
         perfil_delete,
@@ -79,6 +86,7 @@ with app.app_context():
         usuario_get,
         usuario_add,
         usuario_edit,
+        login,
     ]
     for path in paths:
         spec.path(view=path)

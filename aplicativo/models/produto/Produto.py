@@ -12,8 +12,9 @@ class Produto(Base, ClasseBase):
     nome = Column(String(255))
     preco = Column(Float, nullable=False)
     imagem = Column(String(2000))
+    descricao = Column(String(1500))
     perfil_id = Column(ForeignKey("perfil.id"), nullable=False)
-    _fields = ["nome", "perfil_id", "preco", "imagem"]
+    _fields = ["nome", "preco", "imagem", "descricao", "perfil_id"]
 
     def to_json(self):
         dicionario = {key: getattr(self, key) for key in self._fields}
@@ -34,4 +35,5 @@ class ProdutoModel(BaseModel):
     nome: constr(max_length=255)
     preco: float
     imagem: constr(max_length=2000)
+    descricao: Optional[constr(max_length=1500)]
     perfil_id: int
