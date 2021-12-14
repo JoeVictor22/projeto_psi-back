@@ -11,7 +11,7 @@ prefix = "/produto"
 
 
 @app.route(f"{prefix}/list", methods=["GET"])
-@checar_acesso(f"{prefix}-get")
+# @checar_acesso(f"{prefix}-get")
 def produto_all():
     """Busca registro por ID
     ---
