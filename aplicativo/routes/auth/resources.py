@@ -19,7 +19,34 @@ from aplicativo.models.utils.Auth import AuthSchema
 @app.route("/login", methods=["POST"])
 @field_validator(AuthSchema)
 def login():
-    """Cria chave JWT para acesso"""
+    """Cria chave JWT para acesso
+    ---
+    post:
+        summary: Requisita chave JWT para o sistema
+        requestBody:
+            description: Dados necessários para login
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AuthSchema'
+        responses:
+          200:
+            description: "Sucesso"
+            content:
+                application/json:
+                    schema:
+                        $ref: "#/components/schemas/AuthSchema"
+          400:
+            description: "Ocorreu um erro"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+
+    """
     data = request.get_json()
 
     usuario = select(Usuario).where(Usuario.email == data["email"]).limit(1)
