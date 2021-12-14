@@ -48,6 +48,8 @@ def produto_all():
 
     if request.args.get("nome", None):
         query = query.where(Produto.nome.ilike(f"%{request.args['nome']}%"))
+    if request.args.get("perfil_id", None):
+        query = query.where(Produto.perfil_id == request.args["perfil_id"])
 
     query.offset(pagina).limit(app.config["POR_PAGINA"])
 

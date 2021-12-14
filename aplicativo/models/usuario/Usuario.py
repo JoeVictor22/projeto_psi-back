@@ -14,7 +14,7 @@ class Usuario(Base, ClasseBase):
     email = Column(String(255), unique=True)
     senha = Column(String(255))
     grupo_id = Column(Integer)  # FK enum GRUPO
-    _fields = ["nome", "email", "senha", "grupo_id"]
+    _fields = ["nome", "email", "grupo_id"]
 
     @staticmethod
     def from_dict(dicionario):
