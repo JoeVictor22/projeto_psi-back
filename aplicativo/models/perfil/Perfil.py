@@ -13,6 +13,7 @@ class Perfil(Base, ClasseBase):
     usuario_id = Column(ForeignKey("usuario.id"), nullable=False)
     nome = Column(String(255))
     endereco = Column(String(255))
+    telefone = Column(String(20))
     cidade_id = Column(Enum(Cidade), nullable=False)
     geolocalizacao = Column(Float, nullable=False)
     email = Column(String(255))
@@ -21,6 +22,7 @@ class Perfil(Base, ClasseBase):
         "usuario_id",
         "nome",
         "endereco",
+        "telefone",
         "cidade_id",
         "geolocalizacao",
         "email",
@@ -63,6 +65,7 @@ class PerfilModel(BaseModel):
     usuario_id: int
     nome: constr(max_length=255)
     endereco: constr(max_length=255)
+    telefone: constr(max_length=20)
     cidade_id: int
     geolocalizacao: float
     email: constr(max_length=255)
