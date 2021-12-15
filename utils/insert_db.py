@@ -83,31 +83,36 @@ perfils = [
     },
 ]
 
-produtos = [
+produto = [
     {
         "nome": "Hotdog",
         "preco": 2.50,
         "descricao": "O famoso cachorro quente com tudo no capricho.",
+        "imagem": "http://4.bp.blogspot.com/-bNRqwCGEBd0/UOyZV0fQQ2I/AAAAAAAAA8g/6wsvYsbwF1A/s1600/2013-01-08+18.46.10.jpg",
     },
     {
         "nome": "Cheeseburguer Duplo",
         "preco": 4.5,
         "descricao": "Um sanduiche no capricho com duas carnes e queijo derretendo.",
+        "imagem": "https://i.pinimg.com/736x/9f/15/bb/9f15bb33b2638b424caaa453a6af115b.jpg",
     },
     {
         "nome": "Tampico",
         "preco": 4.0,
         "descricao": "Suco de laranja Tampico geladinho 1L.",
+        "imagem": "https://santahelenacenter.com.br/wp-content/uploads/fotos-produtos/59597.jpg",
     },
     {
         "nome": "Sorvete Chocolate",
         "preco": 3.0,
         "descricao": "Sorvete sabor chocolate marca Pardal.",
+        "imagem": "https://gironacidade.com.br/wp-content/uploads/2021/07/IMG_4176fi-768x512.png",
     },
     {
         "nome": "Pastel",
         "preco": 3.0,
         "descricao": "Pastel de camarão receita do grande Abelardo.",
+        "imagem": "https://pbs.twimg.com/media/CZPeZhIW0AAYwCY.jpg",
     },
 ]
 
